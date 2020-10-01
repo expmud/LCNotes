@@ -456,3 +456,93 @@ def kClosest(points, K):
     sort(0, len(points) - 1, K)
     return points[:K]
 ```
+
+# 0496 Next Greater Element I
+```
+public class Solution {
+    public int[] nextGreaterElement(int[] findNums, int[] nums) {
+        Stack < Integer > stack = new Stack < > ();
+        HashMap < Integer, Integer > map = new HashMap < > ();
+        int[] res = new int[findNums.length];
+        for (int i = 0; i < nums.length; i++) {
+            while (!stack.empty() && nums[i] > stack.peek())
+                map.put(stack.pop(), nums[i]);
+            stack.push(nums[i]);
+        }
+        while (!stack.empty())
+            map.put(stack.pop(), -1);
+        for (int i = 0; i < findNums.length; i++) {
+            res[i] = map.get(findNums[i]);
+        }
+        return res;
+    }
+}
+```
+
+# 1027. Longest Arithmetic Subsequence
+```
+class Solution:
+    def longestArithSeqLength(self, A):
+        n=len(A)
+        dp={}
+        for i in range(n):
+            for j in range(i+1,n):
+                dif = A[j]-A[i]
+                if (i,dif) in dp :
+                    dp[(j,dif)]=dp[(i,dif)]+1
+                else:
+                    dp[(j,dif)]=2
+        return max(dp.values())
+```
+
+
+# 958. Check Completeness of a Binary Tree
+```
+class Solution(object):
+    def isCompleteTree(self, root):
+        nodes = [(root, 1)]
+        i = 0
+        while i < len(nodes):
+            node, v = nodes[i]
+            i += 1
+            if node:
+                nodes.append((node.left, 2*v))
+                nodes.append((node.right, 2*v+1))
+
+        return  nodes[-1][1] == len(nodes)
+```
+
+```
+class Solution:
+    def isCompleteTree(self, root: TreeNode) -> bool:
+        arr1 = []
+        arr2 = []
+        arr1.append(root)
+        x = 0
+        while len(arr1) != 0:
+            hasNoChild = False
+            tmp = len(arr1)
+            while len(arr1) != 0:
+                node = arr1.pop()
+                if node.left != None:
+                    if hasNoChild:
+                        return False
+                    arr2.append(node.left)
+                else:
+                    hasNoChild = True
+                    
+                if node.right != None:
+                    if hasNoChild:
+                        return False
+                    arr2.append(node.right)
+                else:
+                    hasNoChild = True
+            arr2.reverse()
+            arr1 = arr2
+            arr2 = []
+            print(x, tmp, len(arr1))
+            if tmp < 2**x and len(arr1) != 0:
+                return False
+            x += 1
+        return True
+```
