@@ -546,3 +546,41 @@ class Solution:
             x += 1
         return True
 ```
+
+# 680. Valid Palindrome II
+## Greedy
+```
+class Solution(object):
+    def validPalindrome(self, s):
+        def is_pali_range(i, j):
+            return all(s[k] == s[j-k+i] for k in range(i, j))
+
+        for i in xrange(len(s) / 2):
+            if s[i] != s[~i]:
+                j = len(s) - 1 - i
+                return is_pali_range(i+1, j) or is_pali_range(i, j-1)
+        return True
+```
+
+# 1428. Leftmost Column with at Least a One
+## Start top right, move left down
+```
+class Solution:
+    def leftMostColumnWithOne(self, binaryMatrix: 'BinaryMatrix') -> int:
+        
+        rows, cols = binaryMatrix.dimensions()
+        
+        # Set pointers to the top-right corner.
+        current_row = 0
+        current_col = cols - 1
+        
+        # Repeat the search until it goes off the grid.
+        while current_row < rows and current_col >= 0:
+            if binaryMatrix.get(current_row, current_col) == 0:
+                current_row += 1
+            else:
+                current_col -= 1
+        
+        # If we never left the last column, it must have been all 0's.
+        return current_col + 1 if current_col != cols - 1 else -1
+```
